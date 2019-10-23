@@ -138,7 +138,9 @@ Juego.iniciarRecursos = function() {
     'imagenes/pacman-fila.png',
     'imagenes/pacman-fila-der.png',
     'imagenes/pacman-fila-izq.png',
-    'imagenes/cherry.png'
+    'imagenes/cherry.png',
+    'imagenes/perder.png',
+    'imagenes/ganar.png'
 
   ]);
   Resources.onReady(this.comenzar.bind(Juego));
@@ -212,8 +214,7 @@ Juego.capturarMovimiento = function(tecla) {
     de sus metodos  */
 
     /* COMPLETAR */
-    this.jugador.x += movX;
-    this.jugador.y += movY;
+    this.jugador.mover(movX,movY);
   }
 };
 
@@ -333,14 +334,28 @@ Juego.intersecan = function(elemento1, elemento2, x, y) {
 Juego.dibujarFondo = function() {
   // Si se termino el juego hay que mostrar el mensaje de game over de fondo
   if (this.terminoJuego()) {
-    Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+    Dibujante.dibujarImagen('imagenes/perder.png', 0, 5, this.anchoCanvas, this.altoCanvas);
+    // Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
     document.getElementById('reiniciar').style.visibility = 'visible';
+    this.enemigos = [];
+    this.obstaculosCarretera = [];
+    this.obstaculoDeAyuda = [];
+    Jugador.sprite = null;
+    this.jugador.mover(0,0);
+
   }
 
   // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
   else if (this.ganoJuego()) {
-    Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
+    Dibujante.dibujarImagen('imagenes/ganar.png',0,5,this.anchoCanvas,this.altoCanvas);
     document.getElementById('reiniciar').style.visibility = 'visible';
+    this.enemigos = [];
+    this.obstaculosCarretera = [];
+    this.obstaculoDeAyuda = [];
+    Jugador.sprite = null;
+    this.jugador.mover(0,0);
+    
+    
   } else {
     Dibujante.dibujarImagen('imagenes/mapa.png', 0, 5, this.anchoCanvas, this.altoCanvas);
   }
